@@ -30,6 +30,17 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def buildVariant = ""
+            if (variant.buildType.name == "release") {
+                buildVariant += "RELEASE"
+            } else {
+                buildVariant += "SNAPSHOT"
+            }
+            output.outputFileName = "common_library_v${variant.versionName}_${new Date().format('yyyyMMdd_HH')}-${buildVariant}.apk"
+        }
+    }
 }
 
 dependencies {

@@ -52,18 +52,6 @@ android {
         jvmTarget = '1.8'
     }
     dataBinding.enabled = true
-
-//    applicationVariants.all { variant ->
-//        variant.outputs.each { output ->
-//            def buildVariant = ""
-//            if (variant.buildType.name == "release") {
-//                buildVariant += "RELEASE"
-//            } else {
-//                buildVariant += "SNAPSHOT"
-//            }
-//            output.outputFileName = "posenet_v${variant.versionName}_${new Date().format('yyyyMMdd_HH')}-${buildVariant}.apk"
-//        }
-//    }
 }
 
 //기존library.jar파일 삭제.
@@ -77,7 +65,7 @@ task exportJar(type:Copy){
     from('build/intermediates/aar_main_jar/release/')
     into('release/')
     include('classes.jar')
-    rename('classes.jar','libraryName.jar')
+    rename('classes.jar','android_common_library.jar')
 }
 
 //exportJar실행시 deleteObjectJar가 실행
