@@ -13,35 +13,35 @@ fun ImageView?.loadImageUrl(url: String?) {
     this?.let {
         if (!url.isNullOrEmpty()) {
             Glide
-                .with(this)
+                .with(it)
                 .load(url)
-                .into(this)
+                .into(it)
         }
     }
 }
 
-@BindingAdapter("android:loadImageUrlWithSize")
-fun ImageView?.loadImageUrlWithSize(url: String?, width: Int, height: Int) {
+@BindingAdapter("loadImageUrlWithSize", "android:imageWidth", "android:imageHeight")
+fun ImageView?.loadImageUrlWithSize(url: String?, width: Int?, height: Int?) {
     this?.let {
         if (!url.isNullOrEmpty()) {
             Glide
-                .with(this)
+                .with(it)
                 .load(url)
-                .override(width, height)
-                .into(this)
+                .override(width ?: it.width, height ?: it.height)
+                .into(it)
         }
     }
 }
 
-@BindingAdapter("android:loadImageUrlWithSize")
-fun ImageView?.loadImageUrlWithSize(url: String?, size: Int) {
+@BindingAdapter("android:loadImageUrlWithSize", "android:imageSize")
+fun ImageView?.loadImageUrlWithSize(url: String?, size: Int?) {
     this?.let {
         if (!url.isNullOrEmpty()) {
             Glide
-                .with(this)
+                .with(it)
                 .load(url)
-                .override(size)
-                .into(this)
+                .override(size ?: it.width)
+                .into(it)
         }
     }
 }
@@ -51,7 +51,7 @@ fun ImageView?.loadImageUrlIntoMemory(url: String?) {
     this?.let {
         if (!url.isNullOrEmpty()) {
             Glide
-                .with(this)
+                .with(it)
                 .asBitmap()
                 .load(url)
                 .into(object : CustomTarget<Bitmap>() {
