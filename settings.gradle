@@ -1,3 +1,4 @@
-include ':test'
 include ':app'
+include ':common'
+project(':common').projectDir = new File(rootDir, 'modules/common/')
 rootProject.name = "android-common-library"
