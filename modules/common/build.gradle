@@ -51,6 +51,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    dataBinding.enabled = true
 
 //    applicationVariants.all { variant ->
 //        variant.outputs.each { output ->
