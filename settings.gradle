@@ -1,3 +1,4 @@
+include ':network'
 include ':app'
 include ':common'
 project(':common').projectDir = new File(rootDir, 'modules/common/')

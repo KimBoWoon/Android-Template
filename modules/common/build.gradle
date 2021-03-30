@@ -4,6 +4,16 @@ plugins {
     id 'kotlin-kapt'
 }
 
+// Create a variable called keystorePropertiesFile, and initialize it to your
+// keystore.properties file, in the rootProject folder.
+def keystorePropertiesFile = rootProject.file("keystore.properties")
+
+// Initialize a new Properties() object called keystoreProperties.
+def keystoreProperties = new Properties()
+
+// Load your keystore.properties file into the keystoreProperties object.
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "29.0.3"
@@ -18,10 +28,20 @@ android {
         consumerProguardFiles "consumer-rules.pro"
     }
 
+    signingConfigs {
+        releaseWithSignedKey {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseWithSignedKey
         }
     }
     compileOptions {
@@ -31,11 +51,40 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    dataBinding.enabled = true
+
+//    applicationVariants.all { variant ->
+//        variant.outputs.each { output ->
+//            def buildVariant = ""
+//            if (variant.buildType.name == "release") {
+//                buildVariant += "RELEASE"
+//            } else {
+//                buildVariant += "SNAPSHOT"
+//            }
+//            output.outputFileName = "posenet_v${variant.versionName}_${new Date().format('yyyyMMdd_HH')}-${buildVariant}.apk"
+//        }
+//    }
 }
 
+//기존library.jar파일 삭제.
+task deleteObjectJar(type:Delete){
+    delete'release/libraryName.jar'
+}
+
+//release폴더에library이름으로jar생성.
+task exportJar(type:Copy){
+    //aar_main_jar/release 에서 classes.jar 파일을 가져온다.
+    from('build/intermediates/aar_main_jar/release/')
+    into('release/')
+    include('classes.jar')
+    rename('classes.jar','libraryName.jar')
+    rename('classes.jar','android_common_library.jar')
+}
+
+//exportJar실행시 deleteObjectJar가 실행
+exportJar.dependsOn(deleteObjectJar,build)
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.31"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:1.4.30"
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
