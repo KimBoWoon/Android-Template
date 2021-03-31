@@ -2,4 +2,5 @@ include ':network'
 include ':app'
 include ':common'
 project(':common').projectDir = new File(rootDir, 'modules/common/')
-rootProject.name = "android-common-library"
+project(':network').projectDir = new File(rootDir, 'modules/network/')
+rootProject.name = "android-template"

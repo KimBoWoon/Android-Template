@@ -2,7 +2,7 @@ package com.bowoon.android.app
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.bowoon.android.android_common_library.R
+import com.bowoon.android.android_template.R
 import com.bowoon.android.app.api.PersonApi
 import com.bowoon.android.app.models.Person
 import com.bowoon.android.common.log.Log
@@ -12,6 +12,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
+import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,7 +30,9 @@ class MainActivity : AppCompatActivity() {
 
         personApi = createRetrofit<PersonApi>(
             "https://randomuser.me/",
-            HttpLoggingInterceptor.Level.BODY,
+            OkHttpClient.Builder().apply {
+                addInterceptor(HttpLoggingInterceptor().apply { this.level = HttpLoggingInterceptor.Level.BODY })
+            }.build(),
             GsonConverterFactory.create(),
             RxJava3CallAdapterFactory.create()
         )
