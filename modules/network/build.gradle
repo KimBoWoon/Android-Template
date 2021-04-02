@@ -43,4 +43,6 @@ dependencies {
     implementation deps.okhttp.logging_interceptor
 
     implementation deps.retrofit.retrofit
+
+    implementation deps.rx.java
 }

@@ -31,7 +31,7 @@ data class UserProfileImage(
     val thumbnail: String
 )
 
-data class Item(
+data class Person(
     @SerializedName("name")
     @Expose
     val name: Name,
@@ -49,10 +49,10 @@ data class Item(
     val phone: String? = null
 )
 
-data class Person(
+data class Persons(
     @SerializedName("results")
     @Expose
-    val items: List<Item>,
+    val persons: MutableList<Person>,
 
     @SerializedName("page")
     @Expose

@@ -20,7 +20,7 @@ fun ImageView?.loadImageUrl(url: String?) {
     }
 }
 
-@BindingAdapter("android:loadImageUrlWithSize", "android:imageWidth", "android:imageHeight")
+@BindingAdapter("android:loadImageUrlWithSize", "android:imageWidth", "android:imageHeight", requireAll = true)
 fun ImageView?.loadImageUrlWithSize(url: String?, width: Int?, height: Int?) {
     this?.let {
         if (!url.isNullOrEmpty()) {
@@ -33,7 +33,7 @@ fun ImageView?.loadImageUrlWithSize(url: String?, width: Int?, height: Int?) {
     }
 }
 
-@BindingAdapter("android:loadImageUrlWithSize", "android:imageSize")
+@BindingAdapter("android:loadImageUrlWithSize", "android:imageSize", requireAll = true)
 fun ImageView?.loadImageUrlWithSize(url: String?, size: Int?) {
     this?.let {
         if (!url.isNullOrEmpty()) {
@@ -46,7 +46,7 @@ fun ImageView?.loadImageUrlWithSize(url: String?, size: Int?) {
     }
 }
 
-@BindingAdapter("android:loadImageUrlIntoMemory", "android:imageListener")
+@BindingAdapter("android:loadImageUrlIntoMemory", "android:imageListener", requireAll = true)
 fun ImageView?.loadImageUrlIntoMemory(url: String?, callback: ((Bitmap) -> Unit)? = null) {
     this?.let {
         if (!url.isNullOrEmpty()) {

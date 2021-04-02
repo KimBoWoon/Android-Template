@@ -4,15 +4,15 @@ plugins {
     id 'kotlin-kapt'
 }
 
-// Create a variable called keystorePropertiesFile, and initialize it to your
-// keystore.properties file, in the rootProject folder.
-def keystorePropertiesFile = rootProject.file("keystore.properties")
-
-// Initialize a new Properties() object called keystoreProperties.
-def keystoreProperties = new Properties()
-
-// Load your keystore.properties file into the keystoreProperties object.
-keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+//// Create a variable called keystorePropertiesFile, and initialize it to your
+//// keystore.properties file, in the rootProject folder.
+//def keystorePropertiesFile = rootProject.file("keystore.properties")
+//
+//// Initialize a new Properties() object called keystoreProperties.
+//def keystoreProperties = new Properties()
+//
+//// Load your keystore.properties file into the keystoreProperties object.
+//keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
     compileSdkVersion 30
@@ -30,20 +30,20 @@ android {
         setProperty("archivesBaseName", "${rootProject.name}_v${versionName}_${new Date().format('yyyyMMdd_HH')}")
     }
 
-    signingConfigs {
-        releaseWithSignedKey {
-            keyAlias keystoreProperties['keyAlias']
-            keyPassword keystoreProperties['keyPassword']
-            storeFile file(keystoreProperties['storeFile'])
-            storePassword keystoreProperties['storePassword']
-        }
-    }
+//    signingConfigs {
+//        releaseWithSignedKey {
+//            keyAlias keystoreProperties['keyAlias']
+//            keyPassword keystoreProperties['keyPassword']
+//            storeFile file(keystoreProperties['storeFile'])
+//            storePassword keystoreProperties['storePassword']
+//        }
+//    }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.releaseWithSignedKey
+//            signingConfig signingConfigs.releaseWithSignedKey
         }
     }
     compileOptions {
@@ -79,6 +79,11 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation deps.ktx.lifecycle
+    kapt deps.ktx.lifecycle_compiler
+    implementation deps.ktx.viewmodel
+    implementation deps.ktx.fragment
 
     implementation deps.glide.glide
     kapt deps.glide.compiler

@@ -1,11 +1,12 @@
 package com.bowoon.android.app
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import com.bowoon.android.android_template.R
+import com.bowoon.android.android_template.databinding.ActivityMainBinding
+import com.bowoon.android.app.adapter.PersonAdapter
 import com.bowoon.android.app.api.PersonApi
-import com.bowoon.android.app.models.Person
-import com.bowoon.android.common.log.Log
+import com.bowoon.android.app.base.DataBindingActivityWithViewModel
+import com.bowoon.android.app.models.Persons
 import com.bowoon.android.network.createRetrofit
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -17,7 +18,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DataBindingActivityWithViewModel<ActivityMainBinding, MainActivityViewModel>
+    (R.layout.activity_main, MainActivityViewModel::class.java) {
     private lateinit var personApi: PersonApi
 
     companion object {
@@ -26,7 +28,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
         personApi = createRetrofit<PersonApi>(
             "https://randomuser.me/",
@@ -40,16 +41,30 @@ class MainActivity : AppCompatActivity() {
         getUsers()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
-                { person ->
-                    for (item in person.items) {
-                        Log.d(TAG, item.toString())
-                    }
-                },
+                { person -> activityVM.personList.value = person?.persons },
                 { e -> e.printStackTrace() }
             )
+
+        initLiveData()
+        initBinding()
     }
 
-    private fun getUsers(): Single<Person> {
+    override fun initLiveData() {
+        activityVM.personList.observe(this) { personList ->
+            (binding.rvPersonList.adapter as? PersonAdapter)?.let { adapter ->
+                adapter.items = personList
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    override fun initBinding() {
+        binding.rvPersonList.adapter = PersonAdapter().also {
+            it.activityVM = activityVM
+        }
+    }
+
+    private fun getUsers(): Single<Persons> {
         return Single.create { emitter ->
             personApi
                 .getUsers(10)
