@@ -99,6 +99,7 @@ dependencies {
 
     implementation deps.ktx.lifecycle
     kapt deps.ktx.lifecycle_compiler
+    implementation deps.ktx.lifecycle_extension
     implementation deps.ktx.viewmodel
     implementation deps.ktx.fragment
 

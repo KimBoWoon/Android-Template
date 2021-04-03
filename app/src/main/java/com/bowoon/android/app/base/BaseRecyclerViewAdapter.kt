@@ -32,4 +32,6 @@ abstract class BaseRecyclerViewAdapter<T> : RecyclerView.Adapter<RecyclerView.Vi
             notifyDataSetChanged()
         }
     }
+
+    abstract override fun getItemViewType(position: Int): Int
 }

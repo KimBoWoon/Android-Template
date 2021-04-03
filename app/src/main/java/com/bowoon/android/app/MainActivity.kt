@@ -6,6 +6,7 @@ import com.bowoon.android.android_template.databinding.ActivityMainBinding
 import com.bowoon.android.app.adapter.PersonAdapter
 import com.bowoon.android.app.api.PersonApi
 import com.bowoon.android.app.base.DataBindingActivityWithViewModel
+import com.bowoon.android.app.dialogs.NetworkErrorDialog
 import com.bowoon.android.app.models.Persons
 import com.bowoon.android.network.createRetrofit
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -38,13 +39,7 @@ class MainActivity : DataBindingActivityWithViewModel<ActivityMainBinding, MainA
             RxJava3CallAdapterFactory.create()
         )
 
-        getUsers()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { person -> activityVM.personList.value = person?.persons },
-                { e -> e.printStackTrace() }
-            )
-
+        getData()
         initLiveData()
         initBinding()
     }
@@ -64,6 +59,24 @@ class MainActivity : DataBindingActivityWithViewModel<ActivityMainBinding, MainA
         }
     }
 
+    private fun getData() {
+        getUsers()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                { person -> activityVM.personList.value = person?.persons },
+                { e ->
+                    e.printStackTrace()
+                    NetworkErrorDialog(
+                        "네트위크 통신에 실패했습니다.\n새로고침하시겠습니까?",
+                        "새로고침",
+                        { getData() },
+                        "취소",
+                        {}
+                    ).show(supportFragmentManager, TAG)
+                }
+            )
+    }
+
     private fun getUsers(): Single<Persons> {
         return Single.create { emitter ->
             personApi
@@ -72,7 +85,7 @@ class MainActivity : DataBindingActivityWithViewModel<ActivityMainBinding, MainA
                 .subscribe(
                     { emitter.onSuccess(it) },
                     { e -> emitter.onError(e) }
-                ).addTo(CompositeDisposable())
+                ).addTo(activityVM.compositeDisposable)
         }
     }
 }

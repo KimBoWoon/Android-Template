@@ -49,6 +49,7 @@ ktx.core_ktx = "androidx.core:core-ktx:$versions.core_ktx"
 // https://developer.android.com/jetpack/androidx/releases/lifecycle
 ktx.lifecycle = "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle_version"
 ktx.lifecycle_compiler = "androidx.lifecycle:lifecycle-compiler:$versions.lifecycle_version"
+ktx.lifecycle_extension = "androidx.lifecycle:lifecycle-extensions:$versions.lifecycle_version"
 // viewmodel
 ktx.viewmodel = "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.viewmodel_version"
 // fragment

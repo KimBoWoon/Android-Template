@@ -8,15 +8,15 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatDialogFragment
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModel
 
 open class DataBindingDialogWithViewModel<V: ViewDataBinding, VM: ViewModel>(
     @LayoutRes private val layoutId: Int,
     private val viewModelClass: Class<VM>
-) : AppCompatDialogFragment() {
+) : DialogFragment() {
     protected lateinit var binding: V
 
     @CallSuper
