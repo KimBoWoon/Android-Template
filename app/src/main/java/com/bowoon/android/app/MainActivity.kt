@@ -8,6 +8,7 @@ import com.bowoon.android.app.api.PersonApi
 import com.bowoon.android.app.base.DataBindingActivityWithViewModel
 import com.bowoon.android.app.dialogs.NetworkErrorDialog
 import com.bowoon.android.app.models.Persons
+import com.bowoon.android.network.RxNetworkError
 import com.bowoon.android.network.createRetrofit
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
@@ -67,7 +68,7 @@ class MainActivity : DataBindingActivityWithViewModel<ActivityMainBinding, MainA
                 { e ->
                     e.printStackTrace()
                     NetworkErrorDialog(
-                        "네트위크 통신에 실패했습니다.\n새로고침하시겠습니까?",
+                        RxNetworkError.getErrorMessage(e),
                         "새로고침",
                         { getData() },
                         "취소",

@@ -22,6 +22,8 @@ object RxNetworkError {
         }
     private val disposableMap = ConcurrentHashMap<Lifecycle, CompositeDisposable>()
     private val publisherMap = ConcurrentLinkedQueue<String>()
+    private const val DEFAULT_NETWORK_ERROR_MESSAGE = "알 수 없는 오류로 인해 네트워크 요청을 실패했습니다. 잠시후 다시 시도해주세요."
+    private const val DEFAULT_ERROR_MESSAGE = "알 수 없는 오류로 인해 해당 기능을 수행할 수 없습니다."
 
     data class NetworkError(val code: Int = 0, val message: String? = null, var publisher: String? = null, val retry: (() -> Unit)? = null)
 
@@ -97,6 +99,35 @@ object RxNetworkError {
                 else -> {
                     publish(publisher, NetworkError(retry = retry))
                 }
+            }
+        }
+    }
+
+    fun getErrorMessage(throwable: Throwable): String {
+        when (throwable) {
+            is HttpException -> {
+                val code = throwable.code()
+                val message = throwable.message()
+
+                return when (code) {
+                    400 -> { "알 수 없는 요청입니다." }
+                    401 -> { "권한이 필요합니다." }
+                    402 -> { "결제가 필요합니다." }
+                    403 -> { "서버가 요청을 거부했습니다." }
+                    404 -> { "요청한 페이지를 찾을 수 없습니다." }
+                    406 -> { "허용되지 않는 요청입니다." }
+                    408 -> { "서버가 응답하지 않습니다." }
+                    415 -> { "지원하지 않는 미디어 타입 입니다." }
+                    500 -> { "서버에서 오류가 발생했습니다." }
+                    501 -> { "서버가 해당 기능을 지원하지 않습니다." }
+                    502 -> { "잘못된 요청입니다." }
+                    503 -> { "서버가 점검중입니다. 잠시후 다시 시도해주세요." }
+                    504 -> { "서버가 응답하지 않습니다." }
+                    else -> { DEFAULT_NETWORK_ERROR_MESSAGE }
+                }
+            }
+            else -> {
+                return throwable.message ?: DEFAULT_ERROR_MESSAGE
             }
         }
     }
