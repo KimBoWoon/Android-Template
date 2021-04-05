@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidcommonlibrary">
-        <activity android:name="com.bowoon.android.app.MainActivity">
+        <activity android:name="com.bowoon.android.app.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

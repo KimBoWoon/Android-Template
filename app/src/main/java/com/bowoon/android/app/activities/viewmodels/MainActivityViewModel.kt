@@ -1,4 +1,4 @@
-package com.bowoon.android.app
+package com.bowoon.android.app.activities.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import com.bowoon.android.app.base.BaseViewModel

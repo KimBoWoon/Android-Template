@@ -1,18 +1,18 @@
-package com.bowoon.android.app
+package com.bowoon.android.app.activities
 
 import android.os.Bundle
 import com.bowoon.android.android_template.R
 import com.bowoon.android.android_template.databinding.ActivityMainBinding
-import com.bowoon.android.app.adapter.PersonAdapter
+import com.bowoon.android.app.activities.viewmodels.MainActivityViewModel
 import com.bowoon.android.app.api.PersonApi
 import com.bowoon.android.app.base.DataBindingActivityWithViewModel
 import com.bowoon.android.app.dialogs.NetworkErrorDialog
+import com.bowoon.android.app.fragments.MainFragment
 import com.bowoon.android.app.models.Persons
 import com.bowoon.android.network.RxNetworkError
 import com.bowoon.android.network.createRetrofit
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
@@ -40,24 +40,26 @@ class MainActivity : DataBindingActivityWithViewModel<ActivityMainBinding, MainA
             RxJava3CallAdapterFactory.create()
         )
 
-        getData()
-        initLiveData()
+//        getData()
+//        initLiveData()
         initBinding()
     }
 
     override fun initLiveData() {
-        activityVM.personList.observe(this) { personList ->
-            (binding.rvPersonList.adapter as? PersonAdapter)?.let { adapter ->
-                adapter.items = personList
-                adapter.notifyDataSetChanged()
-            }
-        }
+//        activityVM.personList.observe(this) { personList ->
+//            (binding.rvPersonList.adapter as? PersonAdapter)?.let { adapter ->
+//                adapter.items = personList
+//                adapter.notifyDataSetChanged()
+//            }
+//        }
     }
 
     override fun initBinding() {
-        binding.rvPersonList.adapter = PersonAdapter().also {
-            it.activityVM = activityVM
-        }
+//        binding.rvPersonList.adapter = PersonAdapter().also {
+//            it.activityVM = activityVM
+//        }
+
+        supportFragmentManager.beginTransaction().add(binding.fcvPerson.id, MainFragment()).commit()
     }
 
     private fun getData() {

@@ -127,7 +127,11 @@ object RxNetworkError {
                 }
             }
             else -> {
-                return throwable.message ?: DEFAULT_ERROR_MESSAGE
+                return if (BuildConfig.DEBUG) {
+                    throwable.message ?: DEFAULT_ERROR_MESSAGE
+                } else {
+                    DEFAULT_ERROR_MESSAGE
+                }
             }
         }
     }
